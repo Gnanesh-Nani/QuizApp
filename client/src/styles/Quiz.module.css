@@ -1,0 +1,655 @@
+/* Quiz Page Styles */
+.quizContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background decoration */
+.quizContainer::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+  animation: float 25s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(180deg); }
+}
+
+/* Header */
+.header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.quizInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quizTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
+}
+
+.questionCounter {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.unansweredWarning {
+  color: #ef4444;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.timerSection {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.timer {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+  font-family: 'Courier New', monospace;
+}
+
+.timerLabel {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Progress Bar */
+.progressContainer {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 5;
+}
+
+.progressContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 6px;
+  background: rgba(229, 231, 235, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  box-shadow: 0 1px 4px rgba(102, 126, 234, 0.2);
+}
+
+/* Main Content */
+.mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  position: relative;
+  z-index: 5;
+}
+
+.quizCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.quizCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Question Section */
+.questionSection {
+  margin-bottom: 40px;
+}
+
+.questionText {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 30px 0;
+  line-height: 1.5;
+}
+
+/* Options */
+.optionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  padding: 20px 25px;
+  border: 2px solid rgba(229, 231, 235, 0.8);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+  position: relative;
+  overflow: hidden;
+}
+
+.optionLabel:hover {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+}
+
+.optionLabel.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.optionInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radioButton {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.optionLabel:hover .radioButton {
+  border-color: #667eea;
+}
+
+.optionLabel.selected .radioButton {
+  border-color: #667eea;
+  background: #667eea;
+}
+
+.radioButtonInner {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.optionLabel.selected .radioButtonInner {
+  opacity: 1;
+}
+
+.optionText {
+  font-size: 1rem;
+  color: #374151;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Navigation */
+.navigationSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 30px;
+  border-top: 1px solid rgba(229, 231, 235, 0.5);
+  margin-top: 40px;
+}
+
+.navButton {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.previousButton {
+  background: rgba(255, 255, 255, 0.9);
+  color: #6b7280;
+  border: 2px solid rgba(229, 231, 235, 0.8);
+}
+
+.previousButton:hover:not(:disabled) {
+  background: white;
+  color: #374151;
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.previousButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.nextButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.nextButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.nextButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submitButton {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Question Navigation */
+.questionNavSection {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.questionNavTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.questionNavGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 8px;
+  max-width: 600px;
+}
+
+.questionNavButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.questionNavButton.current {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.questionNavButton.answered {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.questionNavButton.unanswered {
+  background: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
+  border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+.questionNavButton:hover:not(.current):not(.answered) {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+}
+
+/* Loading and Error States */
+.loadingContainer, .errorContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.loadingText, .errorText {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 500;
+}
+
+.errorText {
+  color: #fecaca;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .headerContent {
+    padding: 0 15px;
+    height: 60px;
+  }
+  
+  .quizTitle {
+    font-size: 1.3rem;
+  }
+  
+  .timer {
+    font-size: 1.5rem;
+  }
+  
+  .mainContent {
+    padding: 20px 15px;
+  }
+  
+  .quizCard {
+    padding: 25px;
+  }
+  
+  .questionText {
+    font-size: 1.2rem;
+  }
+  
+  .optionLabel {
+    padding: 15px 20px;
+  }
+  
+  .navigationSection {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .navButton {
+    width: 100%;
+  }
+  
+  .questionNavGrid {
+    grid-template-columns: repeat(10, 1fr);
+    max-width: none;
+  }
+  
+  .questionNavButton {
+    width: 35px;
+    height: 35px;
+    font-size: 0.75rem;
+  }
+  
+  /* Mobile-specific progress bar styling */
+  .progressBar {
+    height: 8px;
+    background: rgba(229, 231, 235, 0.5);
+    border-radius: 4px;
+    margin: 15px 0;
+  }
+  
+  .progressFill {
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  }
+}
+
+@media (max-width: 480px) {
+  .quizCard {
+    padding: 20px;
+  }
+  
+  .questionText {
+    font-size: 1.1rem;
+  }
+  
+  .optionLabel {
+    padding: 12px 15px;
+  }
+  
+  .optionText {
+    font-size: 0.9rem;
+  }
+  
+  .questionNavButton {
+    width: 30px;
+    height: 30px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Focus states for accessibility */
+.optionLabel:focus-within {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.navButton:focus-visible,
+.questionNavButton:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Warning Overlay */
+.warningOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.warningMessage {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  max-width: 500px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 2px solid #ef4444;
+  animation: slideIn 0.3s ease-out;
+}
+
+.warningMessage h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ef4444;
+  margin: 0 0 20px 0;
+}
+
+.warningMessage p {
+  font-size: 1.1rem;
+  color: #374151;
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.warningMessage p:last-child {
+  font-weight: 600;
+  color: #ef4444;
+  font-size: 1rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Timer warning animation */
+.timer.warning {
+  animation: pulse 1s ease-in-out infinite;
+  color: #ef4444;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Warning Button */
+.warningButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  margin-top: 20px;
+}
+
+.warningButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Confirmation Buttons */
+.confirmButtons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cancelButton {
+  background: #6b7280;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3);
+}
+
+.cancelButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
+  background: #4b5563;
+}
+
+.confirmButton {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.confirmButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+} 
