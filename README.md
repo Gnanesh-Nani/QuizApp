@@ -1,50 +1,37 @@
 # MERN Quiz App
 
-A full-stack quiz application built with the MERN stack (MongoDB, Express.js, React, Node.js) featuring user authentication, quiz taking, and detailed analytics.
+A full-stack quiz application built with the MERN stack (MongoDB, Express.js, React, Node.js) featuring user authentication, quiz taking, admin management, and detailed analytics.
+
+---
 
 ## Features
 
-### 🔐 Authentication
-- User registration and login with username, email, and password
-- JWT-based authentication with token storage in localStorage
-- Protected routes for authenticated users only
+- **Authentication:** Register/login, JWT-based, protected routes
+- **Quiz System:** Multiple-choice, timer, navigation, auto-submit, analytics
+- **Admin Panel:** Create/edit quizzes, manage questions, view analytics
+- **Student Dashboard:** Stats, charts, recent attempts, progress
+- **Responsive UI:** Modern dark theme, custom CSS modules
+- **Sample Data:** JavaScript, React, Node.js, and AdTech quizzes
 
-### 📝 Quiz System
-- Multiple-choice questions with options
-- Timer-based quiz taking with automatic submission
-- Question navigation with progress tracking
-- Support for multiple quiz attempts
-
-### 📊 Student Dashboard
-- Comprehensive statistics overview
-- Score progression charts using Recharts
-- Recent quiz attempts with detailed results
-- Average scores and time tracking
-- Quiz performance analytics
-
-### 🎯 Key Features
-- Real-time timer during quiz taking
-- Question-by-question navigation
-- Visual progress indicators
-- Responsive design with Tailwind CSS
-- Clean and modern UI
+---
 
 ## Tech Stack
 
-### Frontend
-- **React 19** with functional components and hooks
-- **React Router** for navigation
-- **Context API** for state management
-- **Axios** for API communication
-- **Recharts** for data visualization
-- **Tailwind CSS** for styling
+**Frontend:**  
+- React (Vite)  
+- React Router  
+- Context API  
+- Axios  
+- Recharts  
+- CSS Modules
 
-### Backend
-- **Node.js** with Express.js
-- **MongoDB** with Mongoose ODM
-- **JWT** for authentication
-- **bcryptjs** for password hashing
-- **CORS** for cross-origin requests
+**Backend:**  
+- Node.js, Express.js  
+- MongoDB, Mongoose  
+- JWT, bcryptjs  
+- CORS
+
+---
 
 ## Project Structure
 
@@ -52,28 +39,41 @@ A full-stack quiz application built with the MERN stack (MongoDB, Express.js, Re
 QUIZAPP/
 ├── client/                 # React frontend
 │   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── contexts/       # React contexts
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
-│   │   └── utils/          # Utility functions
+│   │   ├── components/     # Reusable components (e.g., DebugUser)
+│   │   ├── contexts/       # AuthContext for state management
+│   │   ├── pages/          # Pages: Dashboard, Quiz, Results, Admin, etc.
+│   │   ├── services/       # API and adminAPI
+│   │   ├── styles/         # CSS modules for theming
+│   │   ├── assets/         # Static assets (e.g., react.svg)
+│   │   └── utils/          # (empty, for future utilities)
+│   ├── public/             # Static files (e.g., vite.svg)
+│   ├── vite.config.js
+│   ├── eslint.config.js
 │   └── package.json
 ├── server/                 # Node.js backend
-│   ├── config/            # Database configuration
-│   ├── controllers/       # Route controllers
-│   ├── middleware/        # Custom middleware
-│   ├── models/           # Mongoose models
-│   ├── routes/           # API routes
-│   ├── seedData.js       # Sample data seeder
+│   ├── config/             # db.js (MongoDB connection)
+│   ├── controllers/        # quiz, attempts, auth, admin controllers
+│   ├── middleware/         # auth, adminAuth
+│   ├── models/             # User, Quiz, QuizAttempt
+│   ├── routes/             # auth, quiz, attempts, admin
+│   ├── scripts/            # createAdmin.js, checkAdmin.js
+│   ├── seedData.js         # Seeds quizzes (including AdTech)
+│   ├── server.js           # Entry point
+│   ├── env.example         # Example environment config
 │   └── package.json
-└── README.md
+├── SETUP.md                # Quick setup guide
+├── README.md               # Project documentation
+└── .gitignore
 ```
+
+---
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- MongoDB (local installation or MongoDB Atlas)
+
+- Node.js (v18+)
+- MongoDB (local or Atlas)
 - npm or yarn
 
 ### Installation
@@ -84,103 +84,94 @@ QUIZAPP/
    cd QUIZAPP
    ```
 
-2. **Install backend dependencies**
+2. **Install dependencies**
    ```bash
-   cd server
-   npm install
+   cd server && npm install
+   cd ../client && npm install
    ```
 
-3. **Install frontend dependencies**
-   ```bash
-   cd ../client
-   npm install
-   ```
+3. **Set up environment variables**
+   - Copy `server/env.example` to `server/.env` and fill in your values.
 
-4. **Set up environment variables**
-   
-   Create a `.env` file in the server directory:
-   ```env
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/quiz-app
-   JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-   NODE_ENV=development
-   ```
-
-5. **Start MongoDB**
-   
-   Make sure MongoDB is running on your system or update the MONGODB_URI to point to your MongoDB instance.
-
-6. **Seed the database with sample data**
+4. **Seed the database**
    ```bash
    cd server
    npm run seed
    ```
 
-7. **Start the backend server**
+5. **Create admin user (optional)**
    ```bash
    cd server
-   npm run dev
+   node scripts/createAdmin.js
    ```
 
-8. **Start the frontend development server**
-   ```bash
-   cd client
-   npm run dev
-   ```
+6. **Start the app**
+   - From the root directory:
+     ```bash
+     npm install concurrently --save-dev
+     npm start
+     ```
+   - Or, in separate terminals:
+     ```bash
+     cd server && npm run dev
+     cd client && npm run dev
+     ```
 
-9. **Open your browser**
-   
-   Navigate to `http://localhost:5173` to access the application.
+7. **Access the app**
+   - Frontend: [http://localhost:5173](http://localhost:5173)
+   - Backend: [http://localhost:5000](http://localhost:5000)
+
+---
 
 ## API Endpoints
 
-### Authentication
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user (protected)
+- `POST /api/auth/register` - Register
+- `POST /api/auth/login` - Login
+- `GET /api/auth/me` - Get current user
+- `GET /api/quiz` - Get all quizzes
+- `GET /api/quiz/:id` - Get quiz by ID
+- `POST /api/quiz/:id/submit` - Submit quiz attempt
+- `GET /api/attempts` - Get user attempts
+- `GET /api/attempts/stats` - Get user stats
+- `GET /api/attempts/:id` - Get attempt details
+- `GET /api/admin/...` - Admin endpoints
 
-### Quizzes
-- `GET /api/quiz` - Get all active quizzes (protected)
-- `GET /api/quiz/:id` - Get specific quiz (protected)
-- `POST /api/quiz/:id/submit` - Submit quiz attempt (protected)
-
-### Attempts
-- `GET /api/attempts` - Get user's quiz attempts (protected)
-- `GET /api/attempts/stats` - Get user's statistics (protected)
-- `GET /api/attempts/:id` - Get specific attempt details (protected)
+---
 
 ## Usage
 
-1. **Register/Login**: Create an account or sign in with existing credentials
-2. **Dashboard**: View available quizzes and your statistics
-3. **Take Quiz**: Click "Start Quiz" to begin a quiz
-4. **Quiz Interface**: 
-   - Answer questions by selecting options
-   - Navigate between questions using Previous/Next buttons
-   - Use the question navigation grid to jump to specific questions
-   - Monitor time remaining
-5. **Results**: View your score and performance after completing a quiz
-6. **Analytics**: Check your progress and statistics on the dashboard
+- **Register/Login** as a user or admin
+- **Dashboard:** View quizzes, stats, and progress
+- **Take Quiz:** Timed, multiple-choice, auto-submit
+- **Admin:** Create/edit quizzes, manage questions
+- **Results:** See scores, correct/incorrect answers, analytics
+
+---
 
 ## Sample Data
 
-The application comes with three sample quizzes:
-- JavaScript Fundamentals (5 questions, 15 minutes)
-- React Basics (5 questions, 20 minutes)
-- Node.js and Express (5 questions, 25 minutes)
+- JavaScript Fundamentals
+- React Basics
+- Node.js and Express
+- AdTech Essentials (20 questions)
+
+---
 
 ## Contributing
 
-1. Fork the repository
+1. Fork the repo
 2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+3. Make changes and test
+4. Submit a pull request
+
+---
 
 ## License
 
-This project is licensed under the MIT License.
+MIT
+
+---
 
 ## Support
 
-For support or questions, please open an issue in the repository. 
+Open an issue in the repository for help or questions. 
